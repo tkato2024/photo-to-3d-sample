@@ -16,6 +16,11 @@
 /////////////////////////////////////////////////////////////////////
 
 //-------------------------------------------------------------------
+// Load environment variables from .env.local
+//-------------------------------------------------------------------
+require('dotenv').config({ path: '.env.local' });
+
+//-------------------------------------------------------------------
 // These packages are included in package.json.
 // Run `npm install` to install them.
 // 'path' is part of Node.js and thus not inside package.json.
@@ -49,7 +54,7 @@ const querystring = require('querystring');
 // Route /auth
 // Redirect to Autodesk sign in page for end user to login
 app.get('/auth', function (req, res) {
-    var redirect_uri = 'https://developer.api.autodesk.com/authentication/v1/authorize?'
+    var redirect_uri = 'https://developer.api.autodesk.com/authentication/v2/authorize?'
     + 'response_type=code'
     + '&client_id=' + FORGE_CLIENT_ID
     + '&redirect_uri=' + encodeURIComponent(FORGE_CALLBACK_URL)
@@ -62,7 +67,7 @@ app.get('/auth', function (req, res) {
 app.get('/callback', function (req, res) {
     Axios({
         method: 'POST',
-        url: 'https://developer.api.autodesk.com/authentication/v1/gettoken',
+        url: 'https://developer.api.autodesk.com/authentication/v2/token',
         headers: {
             'content-type': 'application/x-www-form-urlencoded',
         },
